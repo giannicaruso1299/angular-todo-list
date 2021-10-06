@@ -1,0 +1,9 @@
+.dark-theme {
+  background-color: #0C2032;
+}
+.dark-theme a {
+  color: #617487;
+}
+.dark-theme a:hover {
+  color: orange;
+}

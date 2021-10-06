@@ -1,1 +1,42 @@
-<p>registration works!</p>
+<div id="login">
+  <img alt="Vue logo" class="mt-5" src="favicon.ico">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title text-uppercase px-2 text-white-50">Registrati</h1>
+      <h6 class="lead text-white-50">Inserisci i tuoi dati personali per registrarti</h6>
+      <hr>
+      <form class="my-form">
+        <div class="form-container">
+          <div class="input-field mb-5 mx-auto">
+            <input type="text" :class="{ 'is-invalid': user.user.nome.error }" id="nome" required>
+            <label for="nome" id="nomeLabel">Nome:</label>
+            <span class="invalid-feedback text-danger"></span>
+          </div>
+          <div class="input-field mb-5 mx-auto">
+            <input type="text" :class="{ 'is-invalid': user.user.cognome.error }" id="cognome" required>
+            <label for="cognome" id="cognomeLabel">Cognome:</label>
+            <span class="invalid-feedback text-danger"></span>
+          </div>
+          <div class="input-field mb-5 mx-auto">
+            <input type="text" :class="{ 'is-invalid': user.user.username.error }" id="username" required>
+            <label for="username" id="usernameLabel">Username:</label>
+            <span class="invalid-feedback text-danger"></span>
+          </div>
+          <div class="input-field mx-auto mb-5">
+
+            <input type="password" :class="{ 'is-invalid': user.user.password.error }" id="password" required>
+            <label for="password" id="passwordLabel">Password:</label>
+            <span class="invalid-feedback text-danger"></span>
+          </div>
+          <div class="input-field mx-auto mb-5">
+            <input type="password" :class="{ 'is-invalid': user.user.passwordConfirmation.error }" id="passwordConfirmation" required>
+            <label for="passwordConfirmation" id="passwordLabelConfirmation">Conferma password:</label>
+            <span class="invalid-feedback text-danger"></span>
+          </div>
+          <button class="glow-on-hover mb-3" id="register" type="button">Registrati</button>
+        </div>
+        <p class="text-start text-white-50">Sei già registrato? Login</p>
+      </form>
+    </div>
+  </div>
+</div>

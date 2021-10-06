@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div id="login">
+  <img alt="Angular logo" class="mt-5" src="favicon.ico">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title text-uppercase text-white-50">Login</h1>
+      <hr>
+      <form class="my-form">
+        <div class="form-container">
+          <div class="input-field mb-5" style="margin: 0 auto">
+            <div class="username-field mb-5">
+              <input type="text" id="username" required>
+              <label for="username" id="usernameLabel">Username:</label>
+            </div>
+            <div class="input-field">
+              <input type="password" id="password" required>
+              <label for="password" id="passwordLabel">Password:</label>
+            </div>
+          </div>
+          <button class="glow-on-hover mb-3" type="button">Login</button>
+        </div>
+      </form>
+      <p class="text-start text-white-50 mt-3">Non sei ancora registrato? <a routerLink="/register" class="text-start text-white go-to">Registrati</a></p>
+    </div>
+  </div>
+</div>

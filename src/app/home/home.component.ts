@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {AppComponent} from "../app.component";
 
 @Component({
   selector: 'app-home',
@@ -7,8 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  @Input()
-  title: string;
+  title: string = 'Registrati per visualizzare il contenuto che vuoi';
 
   constructor() { }
 
