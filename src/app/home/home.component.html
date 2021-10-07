@@ -1,1 +1,16 @@
 <h1 class="mt-5">{{title}}</h1>
+<h3>Questa è la lista delle tue cose da fare</h3>
+<div class="accordion p-5" id="todos">
+  <div *ngFor="let todo of todos$; index as i;" class="accordion-item text-white-50">
+    <h2 class="accordion-header" id="heading{{i + 1}}">
+      <button class="accordion-button text-white-50" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + (i+1)" [attr.aria-controls]="'collapse' + (i+1)">
+        {{todo.title}}
+      </button>
+    </h2>
+    <div id="collapse{{i+1}}" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading'+(i + 1)" data-bs-parent="#todos">
+      <div class="accordion-body">
+        <p>{{todo.desc}}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {User} from "../model/user";
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,9 @@ export class NavbarComponent implements OnInit {
 
   title: string = "TodoList Angular";
 
+  @Input()
+  user: User;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -16,6 +20,15 @@ export class NavbarComponent implements OnInit {
 
   isLoginOrRegister() {
     return window.location.pathname === '/login' || window.location.pathname === '/register';
+  }
+
+  logout() {
+    sessionStorage.removeItem('token');
+    window.location.reload();
+  }
+
+  isUserLogged() {
+    return this.user;
   }
 
 }

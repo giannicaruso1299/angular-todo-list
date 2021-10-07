@@ -1,0 +1,24 @@
+.accordion-button {
+  background-color: #42586E;
+  border: none;
+  color: white;
+
+}
+
+.accordion {
+  border: none;
+  color: #0C2032;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #42586E;
+}
+
+.accordion-button:focus {
+  border-color: #42586E;
+}
+
+.accordion-item {
+  background-color: #42586E;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}

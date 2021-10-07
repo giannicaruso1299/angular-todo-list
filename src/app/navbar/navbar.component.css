@@ -7,3 +7,20 @@
 .dark-theme a:hover {
   color: orange;
 }
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
+
+.dropdown-item:hover {
+  background-color: #0C2032;
+}
+
+.dropdown-menu {
+  border: none;
+}
+
+.dropdown-item {
+  cursor: pointer !important;
+}
