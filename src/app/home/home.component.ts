@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../services/user.service";
-import {Observable} from "rxjs";
+import {UserService} from "../services/user/user.service";
 import {Todo} from "../model/todo";
 import {User} from "../model/user";
-import {TodosService} from "../services/todos.service";
+import {TodosService} from "../services/todos/todos.service";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +11,7 @@ import {TodosService} from "../services/todos.service";
 })
 export class HomeComponent implements OnInit {
 
-  todos$: Observable<Todo[]>;
+  todos$: Todo[];
 
   user: User;
 
@@ -24,7 +23,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isUserLogged()) {
-      this.loadTodos(this.user);
+      this.todos$ = this.loadTodos(this.user);
     }
   }
 

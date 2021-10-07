@@ -4,19 +4,21 @@
     <div class="card-body">
       <h1 class="card-title text-uppercase text-white-50">Login</h1>
       <hr>
-      <form class="my-form">
+      <form [formGroup]="form" class="my-form">
         <div class="form-container">
           <div class="input-field mb-5" style="margin: 0 auto">
             <div class="username-field mb-5">
-              <input type="text" id="username" required>
-              <label for="username" id="usernameLabel">Username:</label>
+              <input type="text" [style]="form.controls.username.touched && form.controls.username.invalid ? {'border-color':'red'} : {}" id="username" formControlName="username">
+              <label [style]="form.controls.username.touched && form.controls.username.invalid ? {'color':'red'} : {}" for="username" id="usernameLabel">Username:</label>
+              <small class="invalid-feedback pt-3 text-danger" [style]="form.controls.username.touched && form.controls.username.invalid ? {'display':'block'} : {}">L'username non può essere vuoto</small>
             </div>
             <div class="input-field">
-              <input type="password" id="password" required>
+              <input type="password" id="password" [class.invalid-input]="passwordError" #password required>
               <label for="password" id="passwordLabel">Password:</label>
+              <small class="py-0 my-0 invalid-feedback text-danger" [ngStyle]="passwordError ? {'display':'inline'} : {'display':'none'}">{{ passwordErrors[0] }}</small>
             </div>
           </div>
-          <button class="glow-on-hover mb-3" type="button">Login</button>
+          <button class="glow-on-hover mb-3" (click)="onSubmit()" type="button">Login</button>
         </div>
       </form>
       <p class="text-start text-white-50 mt-3">Non sei ancora registrato? <a routerLink="/register" class="text-start text-white go-to">Registrati</a></p>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {User} from "../model/user";
-import {Todo} from "../model/todo";
-import {TODOS} from "../../todos";
+import {User} from "../../model/user";
+import {Todo} from "../../model/todo";
+import {TODOS} from "../../../assets/todos";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -11,7 +11,7 @@ export class TodosService {
 
   constructor() { }
 
-  getTodosByUser(user: User): Observable<Todo> {
+  getTodosByUser(user: User): Todo[] {
     return TODOS.filter(todo => {
       return todo.user_id === user.id;
     });

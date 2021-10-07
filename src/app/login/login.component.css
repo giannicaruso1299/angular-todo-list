@@ -62,6 +62,14 @@ input:valid {
   border-color: #00dd22;
 }
 
+.invalid-input {
+  border-color: red;
+}
+
+.invalid-feedback {
+  line-height: 2px !important
+}
+
 input:focus~label,
 input:valid~label {
   font-size: 14px;
