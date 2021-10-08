@@ -51,27 +51,42 @@ input {
   color: #0C2032;
 }
 
-input:invalid {
-  outline: 0;
-  /* color: #ff2300;*/
-  /*border-color: #ff2300;*/
+.valid-untouched {
+  border-color: #0C2032;
 }
 
-input:focus,
-input:valid {
+.valid-touched~label {
+  font-size: 14px;
+  top: -24px;
+  color: #00dd22;
+}
+
+.valid-untouched~label {
+  color: #0C2032;
+}
+
+input:invalid {
+  outline: 0;
+}
+
+input:focus, .valid-touched {
   border-color: #00dd22;
 }
 
 .invalid-input {
-  border-color: red;
+  border-color: red !important;
+}
+
+.invalid-input~label {
+  top: -24px;
+
 }
 
 .invalid-feedback {
-  line-height: 2px !important
+  line-height: 20px !important
 }
 
-input:focus~label,
-input:valid~label {
+input:focus~label {
   font-size: 14px;
   top: -24px;
   color: #00dd22;

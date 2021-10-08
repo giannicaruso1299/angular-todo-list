@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../services/user/user.service";
+import {AuthService} from "../services/auth/auth.service";
 import {Todo} from "../model/todo";
 import {User} from "../model/user";
 import {TodosService} from "../services/todos/todos.service";
+import {SharedDataService} from "../services/shared-data/shared-data.service";
 
 @Component({
   selector: 'app-home',
@@ -15,24 +16,34 @@ export class HomeComponent implements OnInit {
 
   user: User;
 
-  title: string = this.isUserLogged() ? `Ciao ${this.userService.loadUser().firstName + ' ' + this.userService.loadUser().lastName}` : 'Devi ancora effettuare il login';
+  title: string;
 
-  constructor(private userService: UserService, private todosService: TodosService) {
-    this.user = this.userService.loadUser();
+  constructor(private userService: AuthService, private sharedData: SharedDataService ,private todosService: TodosService) {
+    this.sharedData.addUserObserverSubscriber(this);
+    this.todosService.addTodosObserverSubscriber(this);
   }
 
   ngOnInit(): void {
-    if (this.isUserLogged()) {
-      this.todos$ = this.loadTodos(this.user);
+    this.user = this.sharedData.user;
+    this.title = this.user ? `Ciao ${this.user.firstName + ' ' + this.user.lastName}` : 'Devi ancora effettuare il login'
+    if (this.user) {
+      this.loadTodos(this.user)
+        .subscribe(todos => {
+          this.todos$ = todos;
+        })
     }
+  }
+
+  notifyUser(user: User) {
+    this.user = user;
+  }
+
+  notifyTodo(todos: Todo[]) {
+    this.todos$ = todos;
   }
 
   loadTodos(user: User) {
     return this.todosService.getTodosByUser(user);
-  }
-
-  isUserLogged() {
-    return sessionStorage.getItem('token') !== null;
   }
 
 }

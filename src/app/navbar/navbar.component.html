@@ -9,8 +9,8 @@
         <a class="nav-link active" routerLink="/">Home</a>
       </li>
     </ul>
-    <!-- navbar non loggata -->
-    <div class="collapse navbar-collapse" *ngIf="!isUserLogged()" id="nav-logged">
+<!--     navbar non loggata-->
+    <div class="collapse navbar-collapse" *ngIf="!user" id="nav-logged">
       <ul class="navbar-nav d-block d-md-none">
         <li class="nav-item">
           <a class="nav-link active" routerLink="/">Home</a>
@@ -25,16 +25,16 @@
         </li>
       </ul>
     </div>
-    <!-- navbar loggata -->
-    <div class="collapse navbar-collapse" [class.justify-content-end]="isUserLogged()" id="navbarNav">
-      <ul class="navbar-nav" *ngIf="isUserLogged()">
-        <li class="nav-item dropdown">
+<!--     navbar loggata-->
+    <div class="collapse navbar-collapse" [class.justify-content-end]="user" id="navbarNav">
+      <ul class="navbar-nav">
+        <li *ngIf="user" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navMenu" data-bs-auto-close="true" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Benvenuto {{user.firstName}} {{user.lastName}}
           </a>
           <ul class="dropdown-menu dark-theme" aria-labelledby="navMenu">
             <li><a class="dropdown-item">Area personale</a></li>
-            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            <li><a class="dropdown-item" (click)="authService.logout()">Logout</a></li>
           </ul>
         </li>
         <ul class="navbar-nav d-block d-md-none">

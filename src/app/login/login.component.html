@@ -4,21 +4,28 @@
     <div class="card-body">
       <h1 class="card-title text-uppercase text-white-50">Login</h1>
       <hr>
-      <form [formGroup]="form" class="my-form">
+      <form [formGroup]="form" #myForm="ngForm" (ngSubmit)="onSubmit()" class="my-form">
         <div class="form-container">
           <div class="input-field mb-5" style="margin: 0 auto">
-            <div class="username-field mb-5">
-              <input type="text" [style]="form.controls.username.touched && form.controls.username.invalid ? {'border-color':'red'} : {}" id="username" formControlName="username">
-              <label [style]="form.controls.username.touched && form.controls.username.invalid ? {'color':'red'} : {}" for="username" id="usernameLabel">Username:</label>
-              <small class="invalid-feedback pt-3 text-danger" [style]="form.controls.username.touched && form.controls.username.invalid ? {'display':'block'} : {}">L'username non può essere vuoto</small>
-            </div>
-            <div class="input-field">
-              <input type="password" id="password" [class.invalid-input]="passwordError" #password required>
-              <label for="password" id="passwordLabel">Password:</label>
-              <small class="py-0 my-0 invalid-feedback text-danger" [ngStyle]="passwordError ? {'display':'inline'} : {'display':'none'}">{{ passwordErrors[0] }}</small>
-            </div>
+              <input type="text"
+                     (mouseleave)="validateRequired()"
+                     [class.valid-untouched]="form.controls.username.untouched && form.controls.username.valid"
+                     [class.invalid-input]="(myForm.submitted && !form.controls.username.valid) || (form.controls.username.touched && form.controls.username.invalid)"
+                     [class.valid-touched]="form.controls.username.touched && form.controls.username.valid"
+                     id="username" formControlName="username">
+              <label [class.text-danger]="(myForm.submitted && !form.controls.username.valid) || (form.controls.username.touched && form.controls.username.invalid)" for="username" id="usernameLabel">Username:</label>
+              <small class="invalid-feedback pt-3 text-danger" [style]="(myForm.submitted && !form.controls.username.valid) || (form.controls.username.touched && form.controls.username.invalid) ? {'display':'block'} : {'display' : 'none'}">{{ usernameErrorMessage }}</small>
           </div>
-          <button class="glow-on-hover mb-3" (click)="onSubmit()" type="button">Login</button>
+          <div class="input-field" style="margin: 30px auto">
+            <input type="password" id="password"
+                   (mouseleave)="validateRequired()"
+                   [class.valid-untouched]="form.controls.password.untouched && form.controls.password.valid"
+                   [class.invalid-input]="(myForm.submitted && !form.controls.password.valid) || (form.controls.password.touched && form.controls.password.invalid)"
+                   [class.valid-touched]="form.controls.password.touched && form.controls.password.valid" formControlName="password">
+            <label for="password" [class.text-danger]="(myForm.submitted && !form.controls.password.valid) || (form.controls.password.touched && form.controls.password.invalid)" id="passwordLabel">Password:</label>
+            <span class="invalid-feedback mt-3 text-danger" [style]="(myForm.submitted && !form.controls.password.valid) || (form.controls.password.touched && form.controls.password.invalid) ? {'display':'block'} : {} ">{{ passwordErrorMessage }}</span>
+          </div>
+          <button class="glow-on-hover mb-3" type="submit">Login</button>
         </div>
       </form>
       <p class="text-start text-white-50 mt-3">Non sei ancora registrato? <a routerLink="/register" class="text-start text-white go-to">Registrati</a></p>

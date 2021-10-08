@@ -1,5 +1,5 @@
 <div class="container-fluid all p-0 text-center">
-  <app-navbar [user]="user"></app-navbar>
+  <app-navbar *ngIf="user"></app-navbar>
   <router-outlet></router-outlet>
 </div>
 

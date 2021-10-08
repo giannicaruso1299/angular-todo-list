@@ -1,20 +1,45 @@
 import {Injectable} from '@angular/core';
 import {User} from "../../model/user";
 import {Todo} from "../../model/todo";
-import {TODOS} from "../../../assets/todos";
 import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {SharedDataService} from "../shared-data/shared-data.service";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodosService {
 
-  constructor() { }
+  todosObserverList: any;
 
-  getTodosByUser(user: User): Todo[] {
-    return TODOS.filter(todo => {
-      return todo.user_id === user.id;
-    });
+  todos$: Todo[];
+
+  constructor(private http: HttpClient, private router: Router, private sharedData: SharedDataService) {
+    this.todosObserverList = [];
+  }
+
+  getTodosByUser(user: User): Observable<Todo[]> {
+    return this.http.get<Todo[]>('http://localhost:4200/assets/todos.json').pipe(
+      map(res => {
+        return res.filter(todo => {
+          return todo.user_id === user.id;
+        })
+      })
+    );
+  }
+
+  addTodosObserverSubscriber(subscribe: any) {
+    this.todosObserverList.push(subscribe);
+  }
+
+  notifyTodoObserver(value: Todo[]) {
+    this.todosObserverList.forEach(el => {
+      if (el.notifyTodo) {
+        el.notifyTodo(value);
+      }
+    })
   }
 
 }

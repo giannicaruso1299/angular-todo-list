@@ -1,6 +1,7 @@
 import {Component, OnInit, Output} from '@angular/core';
-import {UserService} from "./services/user/user.service";
+import {AuthService} from "./services/auth/auth.service";
 import {User} from "./model/user";
+import {SharedDataService} from "./services/shared-data/shared-data.service";
 
 @Component({
   selector: 'app-root',
@@ -13,19 +14,16 @@ export class AppComponent implements OnInit {
 
   user: User;
 
-  constructor(private userService: UserService) { }
-
-  ngOnInit() {
-    if (sessionStorage.getItem('token') !== null) {
-      this.user = this.loadUserByToken();
-      this.title = `Benvenuto ${this.user.firstName} ${this.user.lastName}`;
-    } else {
-      this.title = 'Registrati per visualizzare il contenuto che vuoi';
-    }
+  constructor(private sharedData: SharedDataService, private authService: AuthService) {
+    this.sharedData.addUserObserverSubscriber(this);
   }
 
-  loadUserByToken() {
-    return this.userService.loadUser();
+  ngOnInit() {
+    this.user = this.sharedData.user;
+  }
+
+  notifyUser(user: User) {
+    this.user = user;
   }
 
 }
