@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../model/user";
 import {SharedDataService} from "../services/shared-data/shared-data.service";
 
 @Component({
@@ -15,7 +14,7 @@ export class LoginComponent implements OnInit {
   usernameErrorMessage: string;
   passwordErrorMessage: string;
 
-  form = new FormGroup({
+  form: FormGroup = new FormGroup({
     username: new FormControl(null, [
       Validators.required
     ]),

@@ -6,7 +6,6 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {SharedDataService} from "../shared-data/shared-data.service";
 import {map} from "rxjs/operators";
-
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +35,36 @@ export class AuthService {
         return user;
       })
     )
+  }
+
+  getUserIfNotExists(payload: any): Observable<any> {
+
+    this.errors = [];
+    return this.http.get<User[]>('http://localhost:4200/assets/users.json').pipe(
+      map(res => {
+        let user = res.find(usr => {
+          return usr.username === payload.username
+        });
+        if (user) {
+          this.errors = {alreadyExistingUser: true};
+          return this.errors;
+        }
+        return user;
+      })
+    );
+  }
+
+  register(payload: any) {
+    console.log(payload);
+    return this.http.post<User>('http://localhost:9000/api/save-user', payload);
+  }
+
+  getLengthOfUsersTable() {
+    return this.http.get<User[]>('http://localhost:4200/assets/users.json').pipe(
+      map (res => {
+        return res.length;
+      })
+    );
   }
 
   logout() {

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../services/auth/auth.service";
 
 @Component({
   selector: 'app-registration',
@@ -7,8 +9,135 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor() {
+  usernameErrorMessage: string;
+  passwordErrorMessage: string;
+  nomeErrorMessage: string;
+  cognomeErrorMessage: string;
+  passwordConfirmationErrorMessage: string;
+
+  payload: any;
+
+  form: FormGroup = new FormGroup({
+    nome: new FormControl('Gianni', [
+      Validators.required
+    ]),
+    cognome: new FormControl('Caruso', [
+      Validators.required
+    ]),
+    username: new FormControl('gianni99', [
+      Validators.required
+    ]),
+    password: new FormControl('Gianni.99', [
+      Validators.required,
+      Validators.min(8),
+      Validators.max(16),
+      Validators.pattern('((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#%\.]).{8,16})')
+    ]),
+    passwordConfirmation: new FormControl('Gianni.99', [
+      Validators.required
+    ])
+  });
+
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit(): void {}
+
+  validateRequired() {
+    let flag: boolean = true;
+    if (this.form.controls.nome.invalid) {
+      if (this.form.controls.nome.errors.required) {
+        this.nomeErrorMessage = 'Il campo nome non può essere vuoto';
+      }
+      flag = false;
+    }
+    if (this.form.controls.cognome.invalid) {
+      if (this.form.controls.cognome.errors.required) {
+        this.cognomeErrorMessage = 'Il campo cognome non può essere vuoto';
+      }
+      flag = false;
+    }
+    if (this.form.controls.username.invalid) {
+      if (this.form.controls.username.errors.required) {
+        this.usernameErrorMessage = 'L\'username non può essere vuoto';
+      }
+      flag = false;
+    }
+    if (this.form.controls.password.invalid) {
+      if (this.form.controls.password.errors.required) {
+        this.passwordErrorMessage = 'Il campo password non può essere vuoto';
+      } else if (this.form.controls.password.errors.pattern) {
+        console.log(this.form.controls.password.errors)
+        this.passwordErrorMessage = 'La password deve contenere almeno 8 caratteri, di cui almeno una maiuscola, una minuscola, un numero e un carattere speciale';
+      }
+      flag = false;
+    }
+    if (this.form.controls.passwordConfirmation.invalid) {
+      if (this.form.controls.passwordConfirmation.errors.required) {
+        this.passwordConfirmationErrorMessage = 'Devi confermare la password che hai inserito';
+      }
+      flag = false;
+    }
+    else if (!this.form.controls.password.invalid && !this.form.controls.passwordConfirmation.invalid) {
+      if (this.form.controls.password.value !== this.form.controls.passwordConfirmation.value) {
+        this.form.controls.passwordConfirmation.setErrors({
+          passwordNotMatch: true
+        });
+        this.passwordConfirmationErrorMessage = 'Le due password non coincidono';
+        flag = false;
+      }
+    }
+    return flag;
+  }
+
+  register(e: Event) {
+
+    e.preventDefault();
+
+    if (this.validateRequired()) {
+
+      let nome = this.form.controls.nome.value;
+      let cognome = this.form.controls.cognome.value;
+      let username = this.form.controls.username.value;
+      let password = this.form.controls.password.value;
+
+      let payload = {
+        firstName: nome,
+        lastName: cognome,
+        username: username,
+        password: password
+      };
+
+      let last_index: number;
+
+      this.authService.getUserIfNotExists(payload)
+        .subscribe(res => {
+          if (!res) {
+            this.authService.getLengthOfUsersTable()
+              .subscribe(index => {
+                last_index = index;
+              }).add(() => {
+                this.payload = {id: last_index + 1, ...payload};
+                this.authService.register(this.payload)
+                  .subscribe(res1 => {
+                    console.log(res1);
+                  });
+              });
+          }
+        })
+
+      // this.authService.getLengthOfUsersTable()
+      //   .subscribe(res => {
+      //     this.payload = {id: res + 1, ...payload};
+      //   }).add(() => {
+      //      this.authService.register(this.payload)
+      //        .subscribe(res => {
+      //           return res.subscribe(user => {
+      //             console.log(user);
+      //           })
+      //        })
+      // })
+
+    }
+  }
 }
