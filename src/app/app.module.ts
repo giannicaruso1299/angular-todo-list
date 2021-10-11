@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { ModalComponent } from './modal/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { HttpClientModule } from "@angular/common/http";
     HomeComponent,
     LoginComponent,
     RegistrationComponent,
+    ModalComponent,
   ],
     imports: [
         BrowserModule,

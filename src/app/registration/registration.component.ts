@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth/auth.service";
+import {Router} from "@angular/router";
+import {SharedDataService} from "../services/shared-data/shared-data.service";
 
 @Component({
   selector: 'app-registration',
@@ -18,27 +20,28 @@ export class RegistrationComponent implements OnInit {
   payload: any;
 
   form: FormGroup = new FormGroup({
-    nome: new FormControl('Gianni', [
+    nome: new FormControl(null, [
       Validators.required
     ]),
-    cognome: new FormControl('Caruso', [
+    cognome: new FormControl(null, [
       Validators.required
     ]),
-    username: new FormControl('gianni99', [
+    username: new FormControl(null, [
       Validators.required
     ]),
-    password: new FormControl('Gianni.99', [
+    password: new FormControl(null, [
       Validators.required,
       Validators.min(8),
       Validators.max(16),
       Validators.pattern('((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#%\.]).{8,16})')
     ]),
-    passwordConfirmation: new FormControl('Gianni.99', [
+    passwordConfirmation: new FormControl(null, [
       Validators.required
     ])
   });
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router, public sharedData: SharedDataService) {
+    this.sharedData.addModalTextObserverSubscriber(this);
   }
 
   ngOnInit(): void {}
@@ -120,24 +123,21 @@ export class RegistrationComponent implements OnInit {
                 this.payload = {id: last_index + 1, ...payload};
                 this.authService.register(this.payload)
                   .subscribe(res1 => {
-                    console.log(res1);
+                    this.sharedData.setModal(true, 'Ti sei correttamente registrato');
+                    this.sharedData.notifyModalObserver(true);
+                    this.sharedData.notifyModalTextObserver('Ti sei correttamente registrato');
+                    this.router.navigate(['/login']);
                   });
               });
+          } else {
+            if (res.alreadyExistingUser) {
+              this.form.controls.username.setErrors(res);
+              this.form.controls.username.invalid;
+              console.log(this.form.controls.username);
+              this.usernameErrorMessage = 'Nome utente già esistente';
+            }
           }
-        })
-
-      // this.authService.getLengthOfUsersTable()
-      //   .subscribe(res => {
-      //     this.payload = {id: res + 1, ...payload};
-      //   }).add(() => {
-      //      this.authService.register(this.payload)
-      //        .subscribe(res => {
-      //           return res.subscribe(user => {
-      //             console.log(user);
-      //           })
-      //        })
-      // })
-
+        });
     }
   }
 }

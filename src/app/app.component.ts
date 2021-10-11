@@ -14,16 +14,32 @@ export class AppComponent implements OnInit {
 
   user: User;
 
-  constructor(private sharedData: SharedDataService, private authService: AuthService) {
+  modalShow: boolean;
+
+  modalText: string;
+
+  constructor(public sharedData: SharedDataService, private authService: AuthService) {
     this.sharedData.addUserObserverSubscriber(this);
+    this.sharedData.addModalObserverSubscriber(this);
+    this.sharedData.addModalTextObserverSubscriber(this);
   }
 
   ngOnInit() {
     this.user = this.sharedData.user;
+    this.modalShow = this.sharedData.modal;
+    this.modalText = this.sharedData.modalText;
   }
 
   notifyUser(user: User) {
     this.user = user;
+  }
+
+  notifyModal(show: boolean) {
+    this.modalShow = show;
+  }
+
+  notifyModalText(text: string) {
+    this.modalText = text;
   }
 
 }

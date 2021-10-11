@@ -5,10 +5,10 @@
       <h1 class="card-title text-uppercase px-2 text-white-50">Registrati</h1>
       <h6 class="lead text-white-50">Inserisci i tuoi dati personali per registrarti</h6>
       <hr>
-      <form class="my-form" #regForm="ngForm" [formGroup]="form">
+      <form class="my-form" #regForm="ngForm" (ngSubmit)="register($event)" [formGroup]="form">
         <div class="form-container">
           <div class="input-field mx-auto">
-            <input type="text" id="nome" value="Gianni"
+            <input type="text" id="nome"
               [class.valid-untouched]="form.controls.nome.untouched && form.controls.nome.valid"
               [class.invalid-input]="(regForm.submitted && !form.controls.nome.valid) || (form.controls.nome.touched && form.controls.nome.invalid)"
               [class.valid-touched]="form.controls.username.touched && form.controls.username.valid"
@@ -21,7 +21,7 @@
             </span>
           </div>
           <div class="input-field mx-auto">
-            <input type="text" id="cognome" value="Caruso"
+            <input type="text" id="cognome"
                [class.valid-untouched]="form.controls.cognome.untouched && form.controls.cognome.valid"
                [class.invalid-input]="(regForm.submitted && !form.controls.cognome.valid) || (form.controls.cognome.touched && form.controls.cognome.invalid)"
                [class.valid-touched]="form.controls.cognome.touched && form.controls.cognome.valid"
@@ -35,7 +35,7 @@
             </span>
           </div>
           <div class="input-field mx-auto">
-            <input type="text" id="username" value="gianni99"
+            <input type="text" id="username"
              [class.valid-untouched]="form.controls.username.untouched && form.controls.username.valid"
              [class.invalid-input]="(regForm.submitted && !form.controls.username.valid) || (form.controls.username.touched && form.controls.username.invalid)"
              [class.valid-touched]="form.controls.username.touched && form.controls.username.valid"
@@ -44,12 +44,12 @@
               [class.text-danger]="(regForm.submitted && !form.controls.username.valid) || (form.controls.username.touched && form.controls.username.invalid)"
               for="username" id="usernameLabel">Username: </label>
             <span class="invalid-feedback text-danger"
-                [style]="(regForm.submitted && !form.controls.username.valid) || (form.controls.username.touched && form.controls.username.invalid) ? {'display':'block'} : {'display' : 'none'}">
+                [style]="(regForm.submitted && !form.controls.username.valid) || (form.controls.username.touched && !form.controls.username.valid) ? {'display':'block'} : {'display' : 'none'}">
                 {{ usernameErrorMessage }}
             </span>
           </div>
           <div class="input-field mx-auto">
-            <input type="password" id="password" value="Gianni.99"
+            <input type="password" id="password"
                [class.valid-untouched]="form.controls.password.untouched && form.controls.password.valid"
                [class.invalid-input]="(regForm.submitted && !form.controls.password.valid) || (form.controls.password.touched && form.controls.password.invalid)"
                [class.valid-touched]="form.controls.password.touched && form.controls.password.valid"
@@ -61,7 +61,7 @@
             </span>
           </div>
           <div class="input-field mb-5 mx-auto">
-            <input type="password" id="passwordConfirm" value="Gianni.99"
+            <input type="password" id="passwordConfirm"
                [class.valid-untouched]="form.controls.passwordConfirmation.untouched && form.controls.passwordConfirmation.valid"
                [class.invalid-input]="(regForm.submitted && !form.controls.passwordConfirmation.valid) || (form.controls.passwordConfirmation.touched && form.controls.passwordConfirmation.invalid)"
                [class.valid-touched]="form.controls.passwordConfirmation.touched && form.controls.passwordConfirmation.valid"
@@ -73,10 +73,10 @@
               {{ passwordConfirmationErrorMessage }}
             </span>
           </div>
+          <button class="glow-on-hover mb-4" id="register" type="submit">Registrati</button>
+          <p class="text-start text-white-50">Sei già registrato? <a routerLink="/login" class="text-start text-white go-to">Login</a></p>
         </div>
       </form>
-      <button class="glow-on-hover mb-4" (click)="register($event)" id="register" type="button">Registrati</button>
-      <p class="text-start text-white-50">Sei già registrato? <a routerLink="/login" class="text-start text-white go-to">Login</a></p>
     </div>
   </div>
 </div>

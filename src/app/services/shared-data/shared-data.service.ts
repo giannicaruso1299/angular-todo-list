@@ -7,13 +7,23 @@ import {User} from "../../model/user";
 export class SharedDataService {
 
   userObserverList: any;
-
   user: User;
+
+  modal: boolean;
+  modalObserverList: any;
+
+  modalText: string = '';
+  modalTextObserverList: any;
 
   constructor() {
     this.userObserverList = [];
+    this.modalObserverList = [];
+    this.modalTextObserverList = [];
+    this.modal = true;
+    this.modalText = 'Suca';
     this.user = JSON.parse(sessionStorage.getItem('user'));
     this.notifyUserObserver(this.user);
+    this.notifyModalObserver(this.modal);
   }
 
   public setUser(user: User): void {
@@ -25,14 +35,44 @@ export class SharedDataService {
     }
   }
 
+  public setModal(value: boolean, text: string):void {
+    this.modal = value;
+    this.modalText = text;
+  }
+
   addUserObserverSubscriber(subscribe: any) {
     this.userObserverList.push(subscribe);
   }
 
+  addModalObserverSubscriber(subscribe: any) {
+    this.userObserverList.push(subscribe);
+  }
+
+  addModalTextObserverSubscriber(subscribe: any) {
+    this.modalTextObserverList.push(subscribe);
+  }
+
+  notifyModalObserver(value: boolean) {
+    this.modalObserverList.forEach(el => {
+      if (el.notifyModal) {
+        el.notifyModal(value);
+      }
+    });
+  }
+
+  notifyModalTextObserver(value: string) {
+    this.modalTextObserverList.forEach(el => {
+      if (el.notifyModalText) {
+        el.notifyModalText(value);
+      }
+    });
+  }
+
+
   notifyUserObserver(value: User) {
-    this.userObserverList.forEach(user => {
-      if (user.notifyUser) {
-        user.notifyUser(value);
+    this.userObserverList.forEach(el => {
+      if (el.notifyUser) {
+        el.notifyUser(value);
       }
     })
   }

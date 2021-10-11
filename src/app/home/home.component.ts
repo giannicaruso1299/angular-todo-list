@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
       this.loadTodos(this.user)
         .subscribe(todos => {
           this.todos$ = todos;
-        })
+        });
     }
   }
 
