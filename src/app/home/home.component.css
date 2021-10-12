@@ -2,7 +2,6 @@
   background-color: #42586E;
   border: none;
   color: white;
-
 }
 
 .accordion {
@@ -21,4 +20,12 @@
 .accordion-item {
   background-color: #42586E;
   border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.form-container {
+  background-color: #42586E;
+  margin: 0 auto;
+  border: 2px solid transparent;
+  width: 50%;
+  box-shadow: 5px 10px 15px #0C2032;
 }

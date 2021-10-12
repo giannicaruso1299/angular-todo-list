@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {ModalService} from "../services/modal/modal.service";
+import {SharedDataService} from "../services/shared-data/shared-data.service";
 
 @Component({
   selector: 'app-registration',
@@ -40,7 +41,7 @@ export class RegistrationComponent implements OnInit {
     ])
   });
 
-  constructor(private authService: AuthService, private router: Router, private modalService: ModalService) {
+  constructor(private authService: AuthService, private router: Router, private modalService: ModalService, private sharedData: SharedDataService) {
   }
 
   ngOnInit(): void {}
@@ -96,6 +97,8 @@ export class RegistrationComponent implements OnInit {
 
     e.preventDefault();
 
+    this.sharedData.notifyLoaderObserver(true);
+
     if (this.validateRequired()) {
 
       let nome = this.form.controls.nome.value;
@@ -122,6 +125,7 @@ export class RegistrationComponent implements OnInit {
                 this.payload = {id: last_index + 1, ...payload};
                 this.authService.register(this.payload)
                   .subscribe(res1 => {
+                    this.sharedData.notifyLoaderObserver(false);
                     this.modalService.setModal(true, 'Ti sei correttamente registrato');
                     this.modalService.notifyModalObserver(true);
                     this.modalService.notifyModalTextObserver('Ti sei correttamente registrato');

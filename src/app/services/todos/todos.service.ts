@@ -20,6 +20,10 @@ export class TodosService {
     this.todosObserverList = [];
   }
 
+  setTodos(value: Todo[]) {
+    this.todos$ = value;
+  }
+
   getTodosByUser(user: User): Observable<Todo[]> {
     return this.http.get<Todo[]>('http://localhost:4200/assets/todos.json').pipe(
       map(res => {
@@ -28,6 +32,18 @@ export class TodosService {
         })
       })
     );
+  }
+
+  getLastTodoIndex() {
+    return this.http.get<Todo[]>('http://localhost:4200/assets/todos.json').pipe(
+      map(res => {
+        return res.length;
+      })
+    )
+  }
+
+  addTodo(payload) {
+    return this.http.post<Todo>('http://localhost:9000/api/save-todo', payload);
   }
 
   addTodosObserverSubscriber(subscribe: any) {

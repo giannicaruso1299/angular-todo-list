@@ -1,5 +1,18 @@
+<ng-template #homeContent let-modal>
+  <div class="modal-header">
+    <span class="h4"><i class="fas fa-check text-success">&nbsp;&nbsp;</i>{{ modalTitle }}</span>
+    <span class="close text-end" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true">&times;</span>
+  </div>
+  <div class="modal-body">
+    <p class="lead">{{ modalText }}</p>
+  </div>
+</ng-template>
+
+<button id="homeModalButton" [class.d-none]="true" (click)="open(homeContent)"></button>
+
 <h1 class="mt-5">{{title}}</h1>
 <h3>Questa è la lista delle tue cose da fare</h3>
+<h5 *ngIf="!todos$">Non hai nessun todo in corso</h5>
 <div class="accordion p-5" id="todos">
   <div *ngFor="let todo of todos$; index as i;" class="accordion-item text-white-50">
     <h2 class="accordion-header" id="heading{{i + 1}}">
@@ -13,4 +26,45 @@
       </div>
     </div>
   </div>
+</div>
+
+<button class="btn dark-theme-secondary text-white-50 mb-5" (click)="openTodoForm()">Crea un nuovo todo</button>
+<div class="add-todo" *ngIf="openForm">
+  <form #todoForm  [formGroup]="insertTodo" (ngSubmit)="addTodo()">
+    <div class="form-container mb-5">
+      <div class="input-field mx-auto mb-5 pt-5">
+        <label for="title" class="text-white-50">Titolo: </label>
+        <input type="text" (mouseleave)="validateRequired()"
+               [class.invalid-input]="(todoForm.submitted && !insertTodo.controls.title.valid) || (insertTodo.controls.title.touched && insertTodo.controls.title.invalid)"
+               [class.valid-touched]="insertTodo.controls.title.touched && insertTodo.controls.title.valid"
+               id="title" class="form-control-input" formControlName="title">
+        <span
+          [style]="(todoForm.submitted && !insertTodo.controls.title.valid) || (insertTodo.controls.title.touched && insertTodo.controls.title.invalid) ? {'display':'block'} : {} "
+          class="invalid-feedback text-danger">{{ titleTodoErrorMessage }}</span>
+      </div>
+      <div class="input-field mx-auto my-5">
+        <label for="description" class="text-white-50">Descrizione: </label>
+        <textarea type="text" (mouseleave)="validateRequired()"
+                  [class.invalid-input]="(todoForm.submitted && !insertTodo.controls.description.valid) || (insertTodo.controls.description.touched && insertTodo.controls.description.invalid)"
+                  [class.valid-touched]="insertTodo.controls.description.touched && insertTodo.controls.description.valid"
+                  id="description" class="form-control-input" formControlName="description"></textarea>
+        <span class="invalid-feedback text-danger"
+          [style]="(todoForm.submitted && !insertTodo.controls.description.valid) || (insertTodo.controls.description.touched && insertTodo.controls.description.invalid) ? {'display':'block'} : {} ">
+          {{ descTodoErrorMessage }}
+        </span>
+      </div>
+      <div class="input-field mx-auto my-5">
+        <label for="date" class="text-white-50">Data e ora: </label>
+        <input type="datetime-local" (mouseleave)="validateRequired()"
+               [class.invalid-input]="(todoForm.submitted && !insertTodo.controls.date.valid) || (insertTodo.controls.date.touched && insertTodo.controls.date.invalid)"
+               [class.valid-touched]="insertTodo.controls.date.touched && insertTodo.controls.date.valid"
+               id="date" class="form-control-input" formControlName="date">
+        <span
+          [style]="(todoForm.submitted && !insertTodo.controls.date.valid) || (insertTodo.controls.date.touched && insertTodo.controls.date.invalid) ? {'display':'block'} : {} "
+          class="invalid-feedback text-danger">{{ dateTodoErrorMessage }}</span>
+      </div>
+      <button type="submit" [disabled]="insertTodo.invalid" class="dark-theme-secondary mb-4" id="addTodo">Inserisci todo</button>
+    </div>
+  </form>
+
 </div>

@@ -19,16 +19,24 @@ export class AppComponent implements OnInit {
 
   user: User;
 
-  constructor(public sharedData: SharedDataService, private modal: NgbModal, private authService: AuthService, private modalService: ModalService) {
+  showLoader: boolean;
+
+  constructor(public sharedData: SharedDataService) {
     this.sharedData.addUserObserverSubscriber(this);
+    this.sharedData.addLoaderObserverSubscriber(this);
   }
 
   ngOnInit() {
+    this.showLoader = false;
     this.user = this.sharedData.user;
   }
 
   notifyUser(user: User) {
     this.user = user;
+  }
+
+  notifyLoader(value: boolean) {
+    this.showLoader = value;
   }
 
 }

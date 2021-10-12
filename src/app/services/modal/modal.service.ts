@@ -9,19 +9,22 @@ export class ModalService {
   show: boolean;
   modalObserverList: any;
 
+  modalTitle: string = '';
   modalText: string = '';
   modalTextObserverList: any;
+  modalTitleObserverList: any;
 
   constructor(private modal: NgbModal) {
     this.modalObserverList = [];
     this.modalTextObserverList = [];
+    this.modalTitleObserverList = [];
     this.show = false;
-    this.modalText = 'Suca';
   }
 
-  public setModal(value: boolean, text: string):void {
+  public setModal(value: boolean, text: string, title?: string):void {
     this.show = value;
     this.modalText = text;
+    this.modalTitle = title;
   }
 
   addModalObserverSubscriber(subscribe: any) {
@@ -30,6 +33,10 @@ export class ModalService {
 
   addModalTextObserverSubscriber(subscribe: any) {
     this.modalTextObserverList.push(subscribe);
+  }
+
+  addModalTitleObserverSubscriber(subscribe: any) {
+    this.modalTitleObserverList.push(subscribe);
   }
 
   notifyModalObserver(value: boolean) {
@@ -44,6 +51,14 @@ export class ModalService {
     this.modalTextObserverList.forEach(el => {
       if (el.notifyModalText) {
         el.notifyModalText(value);
+      }
+    });
+  }
+
+  notifyModalTitleObserver(value: string) {
+    this.modalTextObserverList.forEach(el => {
+      if (el.notifyModalTitle) {
+        el.notifyModalTitle(value);
       }
     });
   }

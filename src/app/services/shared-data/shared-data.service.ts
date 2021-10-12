@@ -8,9 +8,11 @@ export class SharedDataService {
 
   userObserverList: any;
   user: User;
+  loaderObserverList: any;
 
   constructor() {
     this.userObserverList = [];
+    this.loaderObserverList = [];
     this.user = JSON.parse(sessionStorage.getItem('user'));
     this.notifyUserObserver(this.user);
   }
@@ -26,6 +28,18 @@ export class SharedDataService {
 
   addUserObserverSubscriber(subscribe: any) {
     this.userObserverList.push(subscribe);
+  }
+
+  addLoaderObserverSubscriber(subscribe: any) {
+    this.loaderObserverList.push(subscribe);
+  }
+
+  notifyLoaderObserver(value: boolean) {
+    this.loaderObserverList.forEach(el => {
+      if (el.notifyLoader) {
+        el.notifyLoader(value);
+      }
+    })
   }
 
   notifyUserObserver(value: User) {

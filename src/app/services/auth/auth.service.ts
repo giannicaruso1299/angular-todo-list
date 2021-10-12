@@ -55,7 +55,6 @@ export class AuthService {
   }
 
   register(payload: any) {
-    console.log(payload);
     return this.http.post<User>('http://localhost:9000/api/save-user', payload);
   }
 

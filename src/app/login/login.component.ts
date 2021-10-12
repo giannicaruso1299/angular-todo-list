@@ -75,7 +75,8 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     let username = this.form.controls.username.value;
-    let password = this.form.controls.password.value;
+    let password = this.form.controls.password.value
+    this.sharedData.notifyLoaderObserver(true);
     if (this.validateRequired()) {
       this.usernameErrorMessage = '';
       this.passwordErrorMessage = '';
@@ -88,6 +89,7 @@ export class LoginComponent implements OnInit {
           this.passwordErrorMessage = 'Hai inserito una password errata';
         } else {
           this.sharedData.setUser(res);
+          this.sharedData.notifyLoaderObserver(false);
           this.sharedData.notifyUserObserver(res);
           this.router.navigate(['/']);
         }
