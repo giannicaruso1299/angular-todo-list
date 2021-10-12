@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SharedDataService} from "../services/shared-data/shared-data.service";
+import {ModalService} from "../services/modal/modal.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,14 @@ export class LoginComponent implements OnInit {
   usernameErrorMessage: string;
   passwordErrorMessage: string;
 
+  modalShow: boolean;
+  modalText: string;
+
+  @ViewChild('content')
+  myModal;
+
+  closeResult = '';
+
   form: FormGroup = new FormGroup({
     username: new FormControl(null, [
       Validators.required
@@ -23,9 +33,27 @@ export class LoginComponent implements OnInit {
     ])
   })
 
-  constructor(private authService: AuthService, private router: Router, private sharedData: SharedDataService) { }
+  constructor(private authService: AuthService, private router: Router, private modalService: NgbModal, private modal: ModalService, private sharedData: SharedDataService) {
+    this.modal.addModalObserverSubscriber(this);
+    this.modal.addModalTextObserverSubscriber(this);
+  }
 
   ngOnInit(): void {
+    this.modalShow = this.modal.show;
+    this.modalText = this.modal.modalText;
+    if (this.modalShow) {
+      this.openModal();
+    }
+  }
+
+  openModal() {
+    document.getElementById('modalButton').click();
+  }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    });
   }
 
   validateRequired() {
@@ -65,6 +93,14 @@ export class LoginComponent implements OnInit {
         }
       });
     }
+  }
+
+  notifyModal(show: boolean) {
+    this.modalShow = show;
+  }
+
+  notifyModalText(text: string) {
+    this.modalText = text;
   }
 
 }

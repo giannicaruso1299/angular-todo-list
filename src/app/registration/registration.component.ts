@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth/auth.service";
 import {Router} from "@angular/router";
-import {SharedDataService} from "../services/shared-data/shared-data.service";
+import {ModalService} from "../services/modal/modal.service";
 
 @Component({
   selector: 'app-registration',
@@ -40,8 +40,7 @@ export class RegistrationComponent implements OnInit {
     ])
   });
 
-  constructor(private authService: AuthService, private router: Router, public sharedData: SharedDataService) {
-    this.sharedData.addModalTextObserverSubscriber(this);
+  constructor(private authService: AuthService, private router: Router, private modalService: ModalService) {
   }
 
   ngOnInit(): void {}
@@ -123,9 +122,9 @@ export class RegistrationComponent implements OnInit {
                 this.payload = {id: last_index + 1, ...payload};
                 this.authService.register(this.payload)
                   .subscribe(res1 => {
-                    this.sharedData.setModal(true, 'Ti sei correttamente registrato');
-                    this.sharedData.notifyModalObserver(true);
-                    this.sharedData.notifyModalTextObserver('Ti sei correttamente registrato');
+                    this.modalService.setModal(true, 'Ti sei correttamente registrato');
+                    this.modalService.notifyModalObserver(true);
+                    this.modalService.notifyModalTextObserver('Ti sei correttamente registrato');
                     this.router.navigate(['/login']);
                   });
               });
@@ -133,7 +132,6 @@ export class RegistrationComponent implements OnInit {
             if (res.alreadyExistingUser) {
               this.form.controls.username.setErrors(res);
               this.form.controls.username.invalid;
-              console.log(this.form.controls.username);
               this.usernameErrorMessage = 'Nome utente già esistente';
             }
           }

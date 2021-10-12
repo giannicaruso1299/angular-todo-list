@@ -1,3 +1,10 @@
+<ng-template #content let-modal>
+  <div class="modal-body">
+    <span class="h4"><i class="fas fa-check text-success">&nbsp;&nbsp;</i>{{ modalText }}</span>
+    <span class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true">&times;</span>
+  </div>
+</ng-template>
+<button id="modalButton" [class.d-none]="true" (click)="open(content)"></button>
 <div id="login">
   <img alt="Angular logo" class="mt-5" src="favicon.ico">
   <div class="card">

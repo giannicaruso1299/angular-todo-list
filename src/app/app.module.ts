@@ -9,7 +9,8 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-import { ModalComponent } from './modal/modal/modal.component';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import {ModalService} from "./services/modal/modal.service";
 
 @NgModule({
   declarations: [
@@ -18,16 +19,16 @@ import { ModalComponent } from './modal/modal/modal.component';
     HomeComponent,
     LoginComponent,
     RegistrationComponent,
-    ModalComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        FormsModule
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    FormsModule,
+    NgbModule
     ],
-  providers: [],
+  providers: [ModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

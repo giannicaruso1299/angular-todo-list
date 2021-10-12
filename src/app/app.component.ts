@@ -1,7 +1,9 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthService} from "./services/auth/auth.service";
 import {User} from "./model/user";
 import {SharedDataService} from "./services/shared-data/shared-data.service";
+import {ModalService} from "./services/modal/modal.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-root',
@@ -10,36 +12,23 @@ import {SharedDataService} from "./services/shared-data/shared-data.service";
 })
 export class AppComponent implements OnInit {
 
+  @ViewChild('modal')
+  myModal;
+
   title = 'TodoList di Angular';
 
   user: User;
 
-  modalShow: boolean;
-
-  modalText: string;
-
-  constructor(public sharedData: SharedDataService, private authService: AuthService) {
+  constructor(public sharedData: SharedDataService, private modal: NgbModal, private authService: AuthService, private modalService: ModalService) {
     this.sharedData.addUserObserverSubscriber(this);
-    this.sharedData.addModalObserverSubscriber(this);
-    this.sharedData.addModalTextObserverSubscriber(this);
   }
 
   ngOnInit() {
     this.user = this.sharedData.user;
-    this.modalShow = this.sharedData.modal;
-    this.modalText = this.sharedData.modalText;
   }
 
   notifyUser(user: User) {
     this.user = user;
-  }
-
-  notifyModal(show: boolean) {
-    this.modalShow = show;
-  }
-
-  notifyModalText(text: string) {
-    this.modalText = text;
   }
 
 }
